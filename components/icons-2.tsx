@@ -7,7 +7,7 @@ type TrippiTroppiIconProps = {
 /**
  * 複雑なパスデータを持つアイコン
  */
-export const TrippiTroppiIcon = ({ className }: TrippiTroppiIconProps): JSX.Element => (
+export const TrippiTroppiIcon = ({ className }: TrippiTroppiIconProps): React.ReactElement => (
     <svg id="trippi-troppi-icon" data-name="layer_1" viewBox="0 0 100 100" className={className}>
       {/* Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  */}
       <defs>
@@ -344,7 +344,7 @@ type GarlicIconProps = {
 /**
  * ニンニクのオーラのような、指定された大きさの破線の円
  */
-export const GarlicIcon = ({ size, className, color = 'white' }: GarlicIconProps): JSX.Element => (
+export const GarlicIcon = ({ size, className, color = 'white' }: GarlicIconProps): React.ReactElement => (
   <svg width={size} height={size} viewBox="0 0 100 100" className={className}>
     <circle
       cx="50"
