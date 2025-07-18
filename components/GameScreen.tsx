@@ -2,7 +2,7 @@ import React from 'react';
 import { useGameLogic } from '../hooks/useGameLogic';
 import type { Upgrade, DevConfig, Weapon } from '../types';
 import { GameStatus, EnemyType, PickupType, ProjectileType } from '../types';
-import { GAME_WIDTH, GAME_HEIGHT, WORLD_WIDTH } from '../constants';
+import { GAME_HEIGHT, WORLD_WIDTH } from '../constants';
 import { 
     TralaleroPlayerIcon, PufferFishIcon, OctopusIcon, RavioliIcon, ForkIcon, GarlicIcon, MagnetIcon, FreezeBombIcon, BombardiroCrocodiloIcon, BossMissileIcon 
 } from './icons';

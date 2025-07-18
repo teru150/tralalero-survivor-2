@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, useCallback, useRef } from 'react';
-import type { PlayerState, EnemyState, ProjectileState, PickupState, Upgrade, Weapon, DevConfig, GameLogicState } from '../types';
+import type { EnemyState, ProjectileState, PickupState, Upgrade, Weapon, DevConfig, GameLogicState } from '../types';
 import { GameStatus, EnemyType, PickupType, ProjectileType } from '../types';
 import { 
     PLAYER_INITIAL_STATE, GAME_WIDTH, GAME_HEIGHT, WORLD_WIDTH, ENEMY_STATS, SPAWN_INTERVAL, MAX_ENEMIES, IFRAME_DURATION, WEAPONS, UPGRADES, 

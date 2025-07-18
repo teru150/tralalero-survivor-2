@@ -876,7 +876,13 @@ export const ForkIcon: React.FC<{ angle: number }> = ({ angle }) => (
     </svg>
 );
 
-export const BossMissileIcon = ({ width = 100, height = 50, className }: BossMissileIconProps): JSX.Element => (
+type BossMissileIconProps = {
+  width?: number;
+  height?: number;
+  className?: string;
+};
+
+export const BossMissileIcon = ({ width = 100, height = 50, className }: BossMissileIconProps): React.ReactElement => (
   <svg
     id="boss-missile-icon"
     data-name="layer-1"

@@ -5,7 +5,6 @@ interface TouchControlsProps {
 }
 
 const TouchControls: React.FC<TouchControlsProps> = ({ onMovementChange }) => {
-  const [activeKeys, setActiveKeys] = useState<Set<string>>(new Set());
   const joystickRef = useRef<HTMLDivElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -13,7 +12,6 @@ const TouchControls: React.FC<TouchControlsProps> = ({ onMovementChange }) => {
   const touchIdRef = useRef<number | null>(null);
 
   const updateMovement = useCallback((keys: Set<string>) => {
-    setActiveKeys(keys);
     onMovementChange(keys);
   }, [onMovementChange]);
 
