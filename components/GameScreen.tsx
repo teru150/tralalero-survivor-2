@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useGameLogic } from '../hooks/useGameLogic';
 import type { Upgrade, DevConfig, Weapon } from '../types';
 import { GameStatus, EnemyType, PickupType, ProjectileType } from '../types';

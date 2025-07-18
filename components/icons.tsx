@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 // 画像から変換したSVGアイコン
 export const BombardiroCrocodiloIcon: React.FC = () => (

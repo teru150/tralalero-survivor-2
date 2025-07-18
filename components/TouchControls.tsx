@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import * as React from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 
 interface TouchControlsProps {
   onMovementChange: (keys: Set<string>) => void;
