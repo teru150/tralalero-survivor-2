@@ -632,6 +632,10 @@ export const useGameLogic = (devConfig?: DevConfig) => {
     }
   }, []);
 
+  const setMovementKeys = useCallback((keys: Set<string>) => {
+    keysPressedRef.current = keys;
+  }, []);
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
@@ -650,5 +654,5 @@ export const useGameLogic = (devConfig?: DevConfig) => {
 
   const cameraX = Math.max(0, Math.min(WORLD_WIDTH - GAME_WIDTH, gameState.player.position.x - GAME_WIDTH / 2));
 
-  return { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive };
+  return { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive, setMovementKeys };
 };

@@ -7,6 +7,7 @@ import {
     TralaleroPlayerIcon, PufferFishIcon, OctopusIcon, RavioliIcon, ForkIcon, GarlicIcon, MagnetIcon, FreezeBombIcon, BombardiroCrocodiloIcon, BossMissileIcon 
 } from './icons';
 import { TrippiTroppiIcon, CrescentAuraIcon, ExplosionIcon } from './icons-2';
+import TouchControls from './TouchControls';
 
 interface GameScreenProps {
   onGameOver: (time: number) => void;
@@ -110,7 +111,7 @@ const TopLeftUI: React.FC<{ player: ReturnType<typeof useGameLogic>['gameState']
     }
 
     return (
-        <div className="absolute left-4 flex flex-col gap-2 w-80 text-white p-2 bg-black/40 rounded-lg shadow-xl border border-slate-700 z-20" style={{ top: '15%' }}>
+        <div className="absolute left-2 md:left-4 flex flex-col gap-2 w-72 md:w-80 text-white p-2 bg-black/40 rounded-lg shadow-xl border border-slate-700 z-20" style={{ top: '10%' }}>
             {/* Timer */}
             <div className="text-4xl font-bold [text-shadow:2px_2px_4px_black] text-center">{minutes}:{seconds}</div>
             {/* Level and XP */}
@@ -141,7 +142,7 @@ const TopLeftUI: React.FC<{ player: ReturnType<typeof useGameLogic>['gameState']
 const BossHealthBar: React.FC<{ health: number; maxHealth: number }> = React.memo(({ health, maxHealth }) => {
     const healthPercentage = maxHealth > 0 ? (health / maxHealth) * 100 : 0;
     return (
-        <div className="absolute right-4 w-1/2 text-white p-2 bg-black/50 rounded-lg shadow-2xl border-4 border-red-700/80 z-30" style={{ top: '15%' }}>
+        <div className="absolute right-2 md:right-4 w-1/2 md:w-1/3 text-white p-2 bg-black/50 rounded-lg shadow-2xl border-4 border-red-700/80 z-30" style={{ top: '10%' }}>
             <h3 className="text-center font-bold text-2xl text-red-300 [text-shadow:2px_2px_4px_black]">BOMBARDIRO CROCODILO</h3>
             <div className="w-full bg-slate-800 rounded-full h-8 mt-2 border-2 border-slate-900 overflow-hidden">
                 <div className="bg-gradient-to-r from-yellow-400 via-red-500 to-red-800 h-full rounded-full transition-all duration-300" style={{ width: `${healthPercentage}%` }}></div>
@@ -152,20 +153,20 @@ const BossHealthBar: React.FC<{ health: number; maxHealth: number }> = React.mem
 });
 
 const LevelUpModal: React.FC<{ options: Upgrade[], onSelect: (upgrade: Upgrade) => void, onSkip: () => void }> = ({ options, onSelect, onSkip }) => (
-    <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
-        <div className="bg-slate-800 p-8 rounded-xl shadow-2xl border-2 border-yellow-400 flex flex-col gap-6 w-full max-w-6xl">
-            <h2 className="text-4xl text-center font-bold text-yellow-300">LEVEL UP!</h2>
+    <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+        <div className="bg-slate-800 p-4 md:p-8 rounded-xl shadow-2xl border-2 border-yellow-400 flex flex-col gap-4 md:gap-6 w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl md:text-4xl text-center font-bold text-yellow-300">LEVEL UP!</h2>
             <p className="text-center text-slate-300">Choose your blessing!</p>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {options.map(opt => (
-                    <button key={opt.id} onClick={() => onSelect(opt)} className="flex flex-col p-4 bg-slate-700 rounded-lg text-left hover:bg-slate-600 hover:border-yellow-400 border-2 border-slate-600 transition-all transform hover:scale-105 h-full">
-                        <h3 className="text-xl font-bold text-green-400">{opt.title}</h3>
-                        <p className="text-slate-300 mt-2 flex-grow">{opt.description}</p>
+                    <button key={opt.id} onClick={() => onSelect(opt)} className="flex flex-col p-3 md:p-4 bg-slate-700 rounded-lg text-left hover:bg-slate-600 hover:border-yellow-400 border-2 border-slate-600 transition-all transform hover:scale-105 h-full touch-manipulation">
+                        <h3 className="text-lg md:text-xl font-bold text-green-400">{opt.title}</h3>
+                        <p className="text-slate-300 mt-2 flex-grow text-sm md:text-base">{opt.description}</p>
                     </button>
                 ))}
             </div>
             <div className="text-center mt-2">
-                <button onClick={() => onSkip()} className="px-6 py-2 bg-slate-600 text-slate-300 font-bold rounded-lg hover:bg-slate-500 transition-colors transform hover:scale-105 shadow-md">
+                <button onClick={() => onSkip()} className="px-6 py-2 bg-slate-600 text-slate-300 font-bold rounded-lg hover:bg-slate-500 transition-colors transform hover:scale-105 shadow-md touch-manipulation">
                     I do not receive it this time
                 </button>
             </div>
@@ -183,7 +184,7 @@ const BossWarning: React.FC = () => (
 
 
 const GameScreen: React.FC<GameScreenProps> = ({ onGameOver, onGameClear, devConfig }) => {
-  const { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive } = useGameLogic(devConfig);
+  const { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive, setMovementKeys } = useGameLogic(devConfig);
   const { player, enemies, projectiles, pickups, explosions } = gameState;
   const freezeTimer = gameState.freezeTimer || 0;
   const boss = enemies.find(e => e.type === EnemyType.BOSS);
@@ -197,7 +198,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ onGameOver, onGameClear, devCon
   }, [status, time, onGameOver, onGameClear]);
 
   return (
-    <div className="relative overflow-hidden" style={{ width: GAME_WIDTH, height: GAME_HEIGHT, background: 'linear-gradient(to bottom, #87CEEB 60%, #F4E2C2 60%)' }}>
+    <div className="relative overflow-hidden w-full h-full max-w-screen-xl mx-auto" style={{ background: 'linear-gradient(to bottom, #87CEEB 60%, #F4E2C2 60%)' }}>
       
       <div className="absolute inset-0 transition-transform duration-100 ease-linear" style={{ transform: `translateX(-${cameraX}px)`, width: WORLD_WIDTH, height: GAME_HEIGHT }}>
           {enemies.map(enemy => {
@@ -214,6 +215,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ onGameOver, onGameClear, devCon
       {boss && <BossHealthBar health={boss.health} maxHealth={boss.maxHealth} />}
       {bossWarningActive && <BossWarning />}
 
+      <TouchControls onMovementChange={setMovementKeys} />
 
       {status === GameStatus.LEVEL_UP && levelUpOptions.length > 0 && <LevelUpModal options={levelUpOptions} onSelect={chooseUpgrade} onSkip={skipUpgrade} />}
     </div>
