@@ -429,7 +429,7 @@ function gameReducer(state: GameLogicState, action: GameAction): GameLogicState 
     }
 
     case 'RESET':
-      return getInitialState(action.payload ? (action.payload as any).devConfig : undefined);
+      return action.payload || getInitialState();
       
     default:
       return state;
@@ -451,7 +451,7 @@ export const useGameLogic = (devConfig?: DevConfig) => {
   const lastTimeRef = useRef<number | null>(null);
   
   useEffect(() => {
-    dispatch({ type: 'RESET', payload: { ...getInitialState(devConfig), devConfig } as any });
+    dispatch({ type: 'RESET', payload: getInitialState(devConfig) });
   }, [JSON.stringify(devConfig)]);
 
   const chooseUpgrade = useCallback((upgrade: Upgrade) => {
