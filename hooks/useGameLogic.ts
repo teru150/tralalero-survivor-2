@@ -429,7 +429,7 @@ function gameReducer(state: GameLogicState, action: GameAction): GameLogicState 
     }
 
     case 'RESET':
-      return action.payload || getInitialState();
+      return getInitialState(action.payload ? (action.payload as any).devConfig : undefined);
       
     default:
       return state;
@@ -451,8 +451,20 @@ export const useGameLogic = (devConfig?: DevConfig) => {
   const lastTimeRef = useRef<number | null>(null);
   
   useEffect(() => {
-    dispatch({ type: 'RESET', payload: getInitialState(devConfig) });
-  }, [JSON.stringify(devConfig)]);
+  // whenever the DevConfig (including startAtBoss) changes, fully re-initialize
+  setStatus(GameStatus.PLAYING);
+  setTime(devConfig?.startAtBoss
+    ? BOSS_SPAWN_TIME - BOSS_WARNING_TIME - 0.1
+    : 0
+  );
+  setSpawnTimer(0);
+  lastMiniBossSpawnTimeRef.current = 0;
+  setBossActive(!!devConfig?.startAtBoss);
+  setBossWarningActive(false);
+  // now reset the actual gameState
+  dispatch({ type: 'RESET', payload: { devConfig } as any });
+}, [JSON.stringify(devConfig)]);
+
 
   const chooseUpgrade = useCallback((upgrade: Upgrade) => {
     dispatch({ type: 'LEVEL_UP', payload: upgrade });
@@ -632,10 +644,6 @@ export const useGameLogic = (devConfig?: DevConfig) => {
     }
   }, []);
 
-  const setMovementKeys = useCallback((keys: Set<string>) => {
-    keysPressedRef.current = keys;
-  }, []);
-
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
@@ -654,5 +662,5 @@ export const useGameLogic = (devConfig?: DevConfig) => {
 
   const cameraX = Math.max(0, Math.min(WORLD_WIDTH - GAME_WIDTH, gameState.player.position.x - GAME_WIDTH / 2));
 
-  return { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive, setMovementKeys };
+  return { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive };
 };

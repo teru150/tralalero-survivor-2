@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { TralaleroPlayerIcon } from './icons';
 import type { DevConfig } from '../types';
 
@@ -28,15 +27,23 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
   }
 
   const handleStartBoss = () => {
-    onStart({
-      ...devConfig,
+    // Explicitly construct the config object to ensure all values are current
+    const bossConfig: DevConfig = {
+      playerSpeed: devConfig.playerSpeed,
+      forkProjectileCount: devConfig.forkProjectileCount,
+      forkCooldown: devConfig.forkCooldown,
+      garlicArea: devConfig.garlicArea,
+      playerRegenRate: devConfig.playerRegenRate,
+      invincible: devConfig.invincible,
+      disableFork: devConfig.disableFork,
       startAtBoss: true,
-    });
+    };
+    onStart(bossConfig);
   }
 
   return (
-    <div className="flex flex-col items-center justify-center text-center p-4 md:p-8 bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4">
-      <h1 className="text-4xl md:text-6xl font-bold text-yellow-300 drop-shadow-lg" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
+    <div className="flex flex-col items-center justify-center text-center p-8 bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl">
+      <h1 className="text-6xl font-bold text-yellow-300 drop-shadow-lg" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
         Tralalero Survivor
       </h1>
       <div className="my-8">
@@ -45,11 +52,11 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
       <p className="max-w-md text-lg text-slate-300 mb-8">
         You are Tralalero Tralala, a shark with three Nikes. Survive the onslaught of derpy sea creatures.
         <br />
-        <span className="font-bold text-white">Use WASD Keys or Touch Controls to move.</span> Attacks are automatic.
+        <span className="font-bold text-white">Use WASD Keys to move.</span> Attacks are automatic.
       </p>
       <button
         onClick={() => onStart()}
-        className="px-8 py-4 bg-green-500 text-white font-bold text-xl md:text-2xl rounded-lg hover:bg-green-600 transition-transform transform hover:scale-105 shadow-lg touch-manipulation"
+        className="px-8 py-4 bg-green-500 text-white font-bold text-2xl rounded-lg hover:bg-green-600 transition-transform transform hover:scale-105 shadow-lg"
       >
         Start Survival
       </button>
@@ -94,12 +101,12 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
             </div>
             <button
               onClick={() => onStart(devConfig)}
-              className="mt-2 md:col-span-2 px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors transform hover:scale-105 shadow-md touch-manipulation">
+              className="mt-2 md:col-span-2 px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors transform hover:scale-105 shadow-md">
               Start with Custom Stats
             </button>
             <button
               onClick={handleStartBoss}
-              className="mt-2 md:col-span-2 px-6 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors transform hover:scale-105 shadow-md touch-manipulation">
+              className="mt-2 md:col-span-2 px-6 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors transform hover:scale-105 shadow-md">
               Start Boss Fight
             </button>
           </div>
