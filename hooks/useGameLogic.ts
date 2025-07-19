@@ -451,19 +451,19 @@ export const useGameLogic = (devConfig?: DevConfig) => {
   const lastTimeRef = useRef<number | null>(null);
   
   useEffect(() => {
-  // whenever the DevConfig (including startAtBoss) changes, fully re-initialize
-  setStatus(GameStatus.PLAYING);
-  setTime(devConfig?.startAtBoss
-    ? BOSS_SPAWN_TIME - BOSS_WARNING_TIME - 0.1
-    : 0
-  );
-  setSpawnTimer(0);
-  lastMiniBossSpawnTimeRef.current = 0;
-  setBossActive(!!devConfig?.startAtBoss);
-  setBossWarningActive(false);
-  // now reset the actual gameState
-  dispatch({ type: 'RESET', payload: { devConfig } as any });
-}, [JSON.stringify(devConfig)]);
+    // whenever the DevConfig (including startAtBoss) changes, fully re-initialize
+    setStatus(GameStatus.PLAYING);
+    setTime(devConfig?.startAtBoss
+      ? BOSS_SPAWN_TIME - BOSS_WARNING_TIME - 0.1
+      : 0
+    );
+    setSpawnTimer(0);
+    lastMiniBossSpawnTimeRef.current = 0;
+    setBossActive(!!devConfig?.startAtBoss);
+    setBossWarningActive(false);
+    // now reset the actual gameState
+    dispatch({ type: 'RESET', payload: { devConfig } as any });
+  }, [JSON.stringify(devConfig)]);
 
 
   const chooseUpgrade = useCallback((upgrade: Upgrade) => {
@@ -660,7 +660,11 @@ export const useGameLogic = (devConfig?: DevConfig) => {
     };
   }, [gameLoop, handleKeyDown, handleKeyUp]);
 
+  const setMovementKeys = useCallback((keys: Set<string>) => {
+    keysPressedRef.current = keys;
+  }, []);
+
   const cameraX = Math.max(0, Math.min(WORLD_WIDTH - GAME_WIDTH, gameState.player.position.x - GAME_WIDTH / 2));
 
-  return { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive };
+  return { gameState, status, time, levelUpOptions, chooseUpgrade, skipUpgrade, cameraX, bossWarningActive, setMovementKeys };
 };
