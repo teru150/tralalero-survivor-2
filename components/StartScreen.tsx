@@ -29,14 +29,8 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
 
   const handleStartBoss = () => {
     onStart({
+      ...devConfig,
       startAtBoss: true,
-      playerSpeed: 600,
-      forkProjectileCount: 5,
-      forkCooldown: 0.3,
-      garlicArea: 250,
-      playerRegenRate: 0.1,
-      invincible: devConfig.invincible,
-      disableFork: devConfig.disableFork,
     });
   }
 
